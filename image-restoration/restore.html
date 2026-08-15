@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restore Image – WaferMind</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css"> 
+  <style>
+    .restore-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .dropzone {
+      border: 2px dashed var(--card-border);
+      border-radius: 1rem;
+      padding: 4rem 2rem;
+      text-align: center;
+      background: rgba(255,255,255,0.01);
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      touch-action: manipulation;
+    }
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--accent-blue);
+      background: rgba(59, 130, 246, 0.02);
+    }
+    .dropzone input {
+      display: none;
+    }
+    .preview-container {
+      margin-top: 1.5rem;
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+    .preview-img {
+      max-height: 300px;
+      max-width: 100%;
+      border-radius: 0.5rem;
+      border: 1px solid var(--card-border);
+    }
+    .file-info {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .model-info-box {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .model-info-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .model-info-list strong {
+      color: var(--text-main);
+    }
+    .action-container {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+    /* Processing Overlay */
+    .processing-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(9, 9, 11, 0.9);
+      backdrop-filter: blur(20px);
+      z-index: 2000;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .processing-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+    .processing-steps .step.active {
+      color: var(--accent-blue);
+      font-weight: 600;
+    }
+    .progress-bar-container {
+      width: 400px;
+      height: 6px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 99px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-violet));
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-brand">WaferMind</a>
+      <span class="nav-subtitle">Image Restoration Platform</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="restore.html" class="active">Restore</a></li>
+      <li><a href="results.html">Results</a></li>
+      <li><a href="analysis.html">Analysis</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="model-badge">MODEL: NAFNet</div>
+      <div class="system-status"><span class="status-dot"></span>SYSTEM READY</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div>
+      <span class="label-small">INFERENCE PIPELINE</span>
+      <h2>Restore an Image</h2>
+      <p class="subtitle">Upload a degraded image and let the restoration model recover its visual details.</p>
+    </div>
+
+    <div class="restore-layout">
+      <!-- Left Column: Uploads -->
+      <div style="display: flex; flex-direction: column; gap: 2rem;">
+        
+        <div class="glass-card">
+          <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Upload Degraded Image</h3>
+          <div class="dropzone" id="degraded-dropzone">
+            <input type="file" id="degraded-file-input" accept="image/png, image/jpeg, image/jpg, .npy">
+            <div id="degraded-prompt">
+              <p style="font-weight: 600; margin-bottom: 0.5rem;">Drop a file here or browse from your device</p>
+              <p class="file-info">Supported: PNG • JPG • JPEG • NPY</p>
+            </div>
+            <div class="preview-container" id="degraded-preview-container">
+              <img id="degraded-preview-img" class="preview-img" alt="Degraded Preview">
+              <div class="file-info" id="degraded-file-meta"></div>
+              <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                <button type="button" class="btn-secondary" id="change-degraded" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Change Image</button>
+                <button type="button" class="btn-secondary" id="remove-degraded" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">Remove</button>
+              </div>
+            </div>
+            <div class="file-info" id="degraded-error" style="display:none; color:#ef4444; margin-top:0.75rem;"></div>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Upload Clean Reference (Optional)</h3>
+          <p class="file-info" style="margin-bottom: 1rem;">Upload the clean reference image if available to calculate restoration metrics such as PSNR and SSIM.</p>
+          <div class="dropzone" id="groundtruth-dropzone" style="padding: 2rem;">
+            <input type="file" id="groundtruth-file-input" accept="image/png, image/jpeg, image/jpg, .npy">
+            <div id="groundtruth-prompt">
+              <p style="font-weight: 600; font-size: 0.9rem;">Drop clean reference or browse</p>
+              <p class="file-info" style="margin-top: 0.35rem;">Supported: PNG • JPG • JPEG • NPY</p>
+            </div>
+            <div class="preview-container" id="groundtruth-preview-container">
+              <img id="groundtruth-preview-img" class="preview-img" style="max-height: 150px;" alt="Ground Truth Preview">
+              <div class="file-info" id="groundtruth-file-meta"></div>
+              <button type="button" class="btn-secondary" id="remove-groundtruth" style="padding: 0.3rem 0.6rem; font-size: 0.75rem; margin-top: 0.5rem;">Remove Reference</button>
+            </div>
+            <div class="file-info" id="groundtruth-error" style="display:none; color:#ef4444; margin-top:0.75rem;"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Model Specs & Trigger -->
+      <div style="display: flex; flex-direction: column; gap: 2rem;">
+        <div class="glass-card model-info-box">
+          <span class="label-small">MODEL CONFIGURATION</span>
+          <h3 style="font-size: 1.25rem;">RESTORATION MODEL</h3>
+          <ul class="model-info-list">
+            <li>Architecture: <strong>NAFNet</strong></li>
+            <li>Weights: <strong>Pretrained + Fine-Tuned</strong></li>
+            <li>Precision: <strong>FP16 Inference</strong></li>
+            <li>Hardware: <strong>GPU Accelerated</strong></li>
+          </ul>
+          <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
+            <span style="color: var(--text-muted);">Status</span>
+            <span style="color: var(--success); font-weight: 600;">READY</span>
+          </div>
+        </div>
+
+        <div style="margin-top: auto;">
+          <button type="button" class="btn-primary" id="restore-btn" style="width: 100%; padding: 1.1rem; font-size: 1.05rem;" disabled>
+            ✦ Restore Image
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Processing Screen Overlay -->
+  <div class="processing-overlay" id="processing-overlay">
+    <h2 style="font-size: 1.75rem;">Restoring image...</h2>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div class="processing-steps" id="processing-steps-list">
+      <div class="step" data-step="0">ANALYZING INPUT</div>
+      <div class="step" data-step="1">DETECTING DEGRADATION</div>
+      <div class="step" data-step="2">RUNNING RESTORATION MODEL</div>
+      <div class="step" data-step="3">RECONSTRUCTING DETAILS</div>
+      <div class="step" data-step="4">FINALIZING OUTPUT</div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/npy-parser.js"></script>
+  <script src="js/restore.js"></script>
+</body>
+</html>

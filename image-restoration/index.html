@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WaferMind – Image Restoration Platform</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 4rem;
+      align-items: center;
+      padding: 4rem 0;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .hero-graphic {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 1rem;
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .graphic-box {
+      width: 100%;
+      padding: 1.25rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed var(--card-border);
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .graphic-box.highlight {
+      background: rgba(59, 130, 246, 0.05);
+      border-color: rgba(59, 130, 246, 0.3);
+      color: var(--accent-blue);
+    }
+
+    .arrow-icon {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .pipeline-section {
+      margin-top: 5rem;
+      text-align: center;
+    }
+
+    .pipeline-flow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 2rem;
+      border-radius: 1rem;
+      position: relative;
+    }
+
+    .pipeline-node {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      border-radius: 0.4rem;
+      position: relative;
+    }
+
+    .pipeline-node.active {
+      color: var(--accent-blue);
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-brand"
+        style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+        <img src="assets/logo.svg" alt="WaferMind Logo" style="width: 32px; height: 32px;">
+        <span>WaferMind</span>
+        <span class="nav-subtitle">Image Restoration Platform</span>
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Overview</a></li>
+      <li><a href="restore.html">Restore</a></li>
+      <li><a href="results.html">Results</a></li>
+      <li><a href="analysis.html">Analysis</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="model-badge">MODEL: NAFNet</div>
+      <div class="system-status"><span class="status-dot"></span>SYSTEM READY</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <span class="label-small">SEMICON AI HACKATHON 2026</span>
+        <h1>Restore What Was Lost.</h1>
+        <p class="subtitle">Recover visual information from degraded images using deep learning-based image restoration
+          designed for computer vision workloads.</p>
+        <div class="hero-cta">
+          <a href="restore.html" class="btn-primary">Start Restoration →</a>
+          <a href="analysis.html" class="btn-secondary">Explore Analysis</a>
+        </div>
+      </div>
+      <div class="hero-graphic">
+        <div class="graphic-box">DEGRADED IMAGE</div>
+        <div class="arrow-icon">↓</div>
+        <div class="graphic-box highlight">AI RESTORATION (NAFNet)</div>
+        <div class="arrow-icon">↓</div>
+        <div class="graphic-box">RESTORED IMAGE</div>
+      </div>
+    </section>
+
+    <section class="features-grid">
+      <div class="glass-card feature-card">
+        <h3>Noise Removal</h3>
+        <p>Advanced deep architecture designed to cleanly eliminate Gaussian and speckle noise without destroying
+          structural edges.</p>
+      </div>
+      <div class="glass-card feature-card">
+        <h3>Resolution Recovery</h3>
+        <p>Recover useful high-frequency visual details and clean up artifacts caused by aggressive down-sampling
+          pipelines.</p>
+      </div>
+      <div class="glass-card feature-card">
+        <h3>Fast Inference</h3>
+        <p>Optimized FP16 restoration pipeline built for rapid edge execution and real-time operational workflows.</p>
+      </div>
+    </section>
+
+    <section class="pipeline-section">
+      <span class="label-small">ARCHITECTURE PIPELINE</span>
+      <h2>End-to-End Processing Workflow</h2>
+      <div class="pipeline-flow">
+        <div class="pipeline-node">INPUT</div>
+        <div class="pipeline-node">DEGRADATION ANALYSIS</div>
+        <div class="pipeline-node">PREPROCESSING</div>
+        <div class="pipeline-node active">RESTORATION MODEL</div>
+        <div class="pipeline-node">POSTPROCESSING</div>
+        <div class="pipeline-node">OUTPUT</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>

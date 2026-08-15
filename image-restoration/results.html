@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Restoration Results – WaferMind</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .result-image-wrapper {
+      width: 100%;
+      height: 600px;
+      margin-top: 2rem;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .result-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .metric-card h3 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .metric-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .improvements-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .improvement-box {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--card-border);
+      padding: 1.25rem;
+      border-radius: 0.5rem;
+    }
+
+    .improvement-box h4 {
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .improvement-box span {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--success);
+    }
+
+    .image-details-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .image-details-table td {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .image-details-table td:first-child {
+      color: var(--text-muted);
+    }
+
+    .image-details-table td:last-child {
+      text-align: right;
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .improvements-list {
+        grid-template-columns: 1fr;
+      }
+
+      .result-image-wrapper {
+        height: 450px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .result-image-wrapper {
+        height: 350px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="navbar">
+
+    <div class="nav-left">
+      <a href="index.html" class="nav-brand">WaferMind</a>
+      <span class="nav-subtitle">Image Restoration Platform</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="restore.html">Restore</a></li>
+      <li><a href="results.html" class="active">Results</a></li>
+      <li><a href="analysis.html">Analysis</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <div class="model-badge">MODEL: NAFNet</div>
+
+      <div class="system-status">
+        <span class="status-dot"></span>
+        SYSTEM READY
+      </div>
+    </div>
+
+  </header>
+
+  <main class="container">
+
+    <div>
+      <span class="label-small">INFERENCE COMPLETE</span>
+
+      <h2>Restoration Results</h2>
+
+      <p class="subtitle">
+        NAFNet restored output generated from the uploaded image.
+      </p>
+    </div>
+
+    <div class="result-image-wrapper">
+      <img
+        id="restored-image"
+        class="result-image"
+        alt="NAFNet Restored Output"
+      >
+    </div>
+
+    <div class="metrics-grid">
+
+      <div class="glass-card metric-card">
+        <h3 id="metric-psnr">—</h3>
+        <p>Peak Signal-to-Noise Ratio</p>
+      </div>
+
+      <div class="glass-card metric-card">
+        <h3 id="metric-ssim">—</h3>
+        <p>Structural Similarity</p>
+      </div>
+
+      <div class="glass-card metric-card">
+        <h3 id="metric-latency">—</h3>
+        <p>Restoration Latency</p>
+      </div>
+
+      <div class="glass-card metric-card">
+        <h3 id="metric-resolution">—</h3>
+        <p>Output Resolution</p>
+      </div>
+
+    </div>
+
+    <div class="details-grid">
+
+      <div class="glass-card">
+
+        <h3>Restoration Summary</h3>
+
+        <p
+          class="file-info"
+          style="margin-top: 0.25rem;"
+        >
+          NAFNet performs restoration and 2× super-resolution on the uploaded input.
+        </p>
+
+        <div class="improvements-list">
+
+          <div class="improvement-box">
+            <h4>Noise Reduction</h4>
+            <span>NAFNet</span>
+          </div>
+
+          <div class="improvement-box">
+            <h4>Detail Recovery</h4>
+            <span>NAFNet</span>
+          </div>
+
+          <div class="improvement-box">
+            <h4>Super Resolution</h4>
+            <span>2× OUTPUT</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="glass-card">
+
+        <h3>Image Details</h3>
+
+        <table class="image-details-table">
+
+          <tr>
+            <td>Input</td>
+            <td id="detail-input-res">—</td>
+          </tr>
+
+          <tr>
+            <td>Output</td>
+            <td id="detail-output-res">—</td>
+          </tr>
+
+          <tr>
+            <td>Model</td>
+            <td>NAFNet</td>
+          </tr>
+
+          <tr>
+            <td>Precision</td>
+            <td>FP16</td>
+          </tr>
+
+          <tr>
+            <td>Hardware</td>
+            <td>GPU Accelerated</td>
+          </tr>
+
+        </table>
+
+      </div>
+
+    </div>
+
+    <div
+      style="
+        display:flex;
+        gap:1rem;
+        margin-top:2.5rem;
+        justify-content:flex-end;
+      "
+    >
+
+      <a
+        href="restore.html"
+        class="btn-secondary"
+      >
+        Restore Another Image
+      </a>
+
+      <button
+        type="button"
+        class="btn-primary"
+        id="download-btn"
+      >
+        Download Restored Image
+      </button>
+
+    </div>
+
+  </main>
+
+  <script src="js/main.js"></script>
+  <script src="js/results.js"></script>
+
+</body>
+</html>

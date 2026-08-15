@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restoration Analysis – WaferMind</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .analysis-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .stat-bar-container {
+      margin-top: 1rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 0.4rem;
+      height: 8px;
+      overflow: hidden;
+    }
+    .stat-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-violet));
+    }
+    .benchmark-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+    }
+    .benchmark-table th, .benchmark-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .benchmark-table th {
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+    .benchmark-table tr.highlight-row {
+      background: rgba(59, 130, 246, 0.05);
+    }
+    .benchmark-table tr.highlight-row td {
+      border-color: rgba(59, 130, 246, 0.2);
+    }
+    .pipeline-interactive {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .pipeline-step-box {
+      flex: 1;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--card-border);
+      padding: 1.25rem 1rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      transition: var(--transition);
+      cursor: default;
+    }
+    .pipeline-step-box:hover {
+      border-color: var(--accent-blue);
+      background: rgba(59, 130, 246, 0.04);
+    }
+    .pipeline-step-box h4 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+    .pipeline-step-box p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-brand">WaferMind</a>
+      <span class="nav-subtitle">Image Restoration Platform</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="restore.html">Restore</a></li>
+      <li><a href="results.html">Results</a></li>
+      <li><a href="analysis.html" class="active">Analysis</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="model-badge">MODEL: NAFNet</div>
+      <div class="system-status"><span class="status-dot"></span>SYSTEM READY</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div>
+      <span class="label-small">TECHNICAL ASSESSMENT</span>
+      <h2>Restoration Analysis</h2>
+      <p class="subtitle">Understand degradation profiling, model processing mechanics, and comparative benchmark performance.</p>
+    </div>
+
+    <!-- Degradation Analysis -->
+    <div class="analysis-grid">
+      <div class="glass-card analysis-card">
+        <h3>Gaussian Noise</h3>
+        <p class="file-info">Severity: <strong style="color: var(--text-main);">HIGH</strong></p>
+        <div class="stat-bar-container"><div class="stat-bar" style="width: 85%;"></div></div>
+      </div>
+      <div class="glass-card analysis-card">
+        <h3>Speckle Noise</h3>
+        <p class="file-info">Severity: <strong style="color: var(--text-main);">MEDIUM</strong></p>
+        <div class="stat-bar-container"><div class="stat-bar" style="width: 60%;"></div></div>
+      </div>
+      <div class="glass-card analysis-card">
+        <h3>Resolution Loss</h3>
+        <p class="file-info">Severity: <strong style="color: var(--text-main);">HIGH</strong></p>
+        <div class="stat-bar-container"><div class="stat-bar" style="width: 90%;"></div></div>
+      </div>
+    </div>
+
+    <!-- Interactive Pipeline Breakdown -->
+    <div class="glass-card" style="margin-top: 2rem;">
+      <h3>Restoration Pipeline Breakdown</h3>
+      <p class="file-info" style="margin-top: 0.25rem;">Hover over processing stages to inspect execution logic.</p>
+      <div class="pipeline-interactive">
+        <div class="pipeline-step-box">
+          <h4>DEGRADED IMAGE</h4>
+          <p>Raw input ingestion</p>
+        </div>
+        <div class="pipeline-step-box">
+          <h4>PREPROCESSING</h4>
+          <p>Normalization & FP16 cast</p>
+        </div>
+        <div class="pipeline-step-box">
+          <h4>PATCH EXTRACTION</h4>
+          <p>Overlapping tile slicing</p>
+        </div>
+        <div class="pipeline-step-box" style="border-color: var(--accent-blue);">
+          <h4>NAFNet</h4>
+          <p>Non-linear activation free block</p>
+        </div>
+        <div class="pipeline-step-box">
+          <h4>RECONSTRUCTION</h4>
+          <p>Tile stitching & blending</p>
+        </div>
+        <div class="pipeline-step-box">
+          <h4>POSTPROCESSING</h4>
+          <p>Color grading & clamping</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image Statistics & Benchmarks -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+      <div class="glass-card">
+        <h3>Image Statistics</h3>
+        <table class="image-details-table" style="margin-top: 1rem;">
+          <tr><td>Input Resolution</td><td>1024 × 1024</td></tr>
+          <tr><td>Output Resolution</td><td>1024 × 1024</td></tr>
+          <tr><td>Channels</td><td>RGB</td></tr>
+          <tr><td>Model</td><td>NAFNet</td></tr>
+          <tr><td>Precision</td><td>FP16</td></tr>
+          <tr><td>Inference</td><td>GPU Accelerated</td></tr>
+          <tr><td>Input Range</td><td>[0, 1] (Clipped)</td></tr>
+          <tr><td>Output Range</td><td>[0, 1]</td></tr>
+        </table>
+      </div>
+
+      <div class="glass-card">
+        <h3>Model Benchmarks</h3>
+        <table class="benchmark-table">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>PSNR</th>
+              <th>SSIM</th>
+              <th>Latency</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="highlight-row">
+              <td><strong>NAFNet (Ours)</strong></td>
+              <td>32.84</td>
+              <td>0.941</td>
+              <td>84 ms</td>
+            </tr>
+            <tr>
+              <td>SwinIR</td>
+              <td>32.51</td>
+              <td>0.936</td>
+              <td>137 ms</td>
+            </tr>
+            <tr>
+              <td>Restormer</td>
+              <td>33.02</td>
+              <td>0.947</td>
+              <td>214 ms</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
