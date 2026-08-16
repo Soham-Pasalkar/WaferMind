@@ -3,33 +3,217 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Restoration Results – WaferMind</title>
-
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
-
-  <link rel="stylesheet" href="css/style.css">
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-deep: #020617;
+      --bg-surface: #0f172a;
+      --electric-blue: #38bdf8;
+      --electric-cyan: #22d3ee;
+      --navy-card: rgba(15, 23, 42, 0.88);
+      --border-electric: rgba(56, 189, 248, 0.2);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.5;
+      /* Immersive semiconductor wafer background matching index and restore pages */
+      background-image: linear-gradient(135deg, rgba(2, 6, 23, 0.94) 0%, rgba(15, 23, 42, 0.92) 100%),
+                        url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2000&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    /* Fixed Navbar UI Experience matching the clean index & restore layout */
+    .navbar {
+      background: rgba(2, 6, 23, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-electric);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2.5rem;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+    }
+
+    .nav-brand span {
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--text-main);
+      letter-spacing: -0.025em;
+      white-space: nowrap;
+    }
+
+    .nav-subtitle {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+      padding-left: 1.5rem;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .nav-links a.active,
+    .nav-links a:hover {
+      color: var(--electric-blue);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .model-badge {
+      background: rgba(56, 189, 248, 0.08);
+      color: var(--electric-blue);
+      padding: 0.45rem 1rem;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      white-space: nowrap;
+    }
+
+    .system-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: #34d399;
+      font-family: 'JetBrains Mono', monospace;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #34d399;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #34d399;
+    }
+
+    /* Container Styling */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .label-small {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--electric-cyan);
+      letter-spacing: 0.12em;
+      background: rgba(34, 211, 238, 0.1);
+      padding: 0.35rem 0.75rem;
+      border-radius: 4px;
+      border: 1px solid rgba(34, 211, 238, 0.25);
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Glass Cards */
+    .glass-card {
+      position: relative;
+      background: var(--navy-card);
+      border: 1px solid var(--border-electric);
+      border-radius: 1rem;
+      padding: 2rem;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 25px 50px -10px rgba(56, 189, 248, 0.15);
+    }
+
     .result-image-wrapper {
       width: 100%;
-      height: 600px;
+      height: 550px;
       margin-top: 2rem;
       border-radius: 1rem;
       overflow: hidden;
-      border: 1px solid var(--card-border);
-      background: #000;
+      border: 1px solid var(--border-electric);
+      background: rgba(2, 6, 23, 0.8);
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.7);
     }
 
     .result-image {
@@ -52,6 +236,7 @@
       color: var(--text-main);
       margin-bottom: 0.25rem;
       letter-spacing: -0.02em;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .metric-card p {
@@ -61,34 +246,43 @@
 
     .details-grid {
       display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 2rem;
-      margin-top: 2rem;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 2.5rem;
+      margin-top: 2.5rem;
+      align-items: start;
     }
 
     .improvements-list {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
+      gap: 1.25rem;
       margin-top: 1.5rem;
     }
 
     .improvement-box {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--card-border);
+      background: rgba(2, 6, 23, 0.5);
+      border: 1px solid var(--border-electric);
       padding: 1.25rem;
       border-radius: 0.5rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .improvement-box:hover {
+      border-color: var(--electric-blue);
     }
 
     .improvement-box h4 {
       font-size: 0.9rem;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.35rem;
+      color: var(--text-main);
+      font-weight: 700;
     }
 
     .improvement-box span {
       font-size: 0.75rem;
       font-weight: 600;
-      color: var(--success);
+      color: #34d399;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .image-details-table {
@@ -98,8 +292,8 @@
     }
 
     .image-details-table td {
-      padding: 0.75rem 0;
-      border-bottom: 1px solid var(--card-border);
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--border-electric);
     }
 
     .image-details-table td:first-child {
@@ -109,23 +303,68 @@
     .image-details-table td:last-child {
       text-align: right;
       font-weight: 600;
+      color: var(--text-main);
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    @media (max-width: 900px) {
+    /* Action Buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--electric-blue) 0%, #0284c7 100%);
+      color: #020617;
+      font-weight: 700;
+      padding: 0.9rem 2rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.4);
+      transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -5px rgba(56, 189, 248, 0.6);
+    }
+
+    .btn-secondary {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border-electric);
+      color: var(--text-main);
+      font-weight: 600;
+      padding: 0.9rem 2rem;
+      border-radius: 0.5rem;
+      backdrop-filter: blur(8px);
+      transition: all 0.25s ease;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(30, 41, 59, 0.9);
+      border-color: var(--electric-blue);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 1024px) {
       .metrics-grid {
         grid-template-columns: repeat(2, 1fr);
       }
-
       .details-grid {
         grid-template-columns: 1fr;
       }
-
       .improvements-list {
         grid-template-columns: 1fr;
       }
-
-      .result-image-wrapper {
-        height: 450px;
+      .nav-links {
+        display: none;
       }
     }
 
@@ -133,7 +372,6 @@
       .metrics-grid {
         grid-template-columns: 1fr;
       }
-
       .result-image-wrapper {
         height: 350px;
       }
@@ -143,40 +381,35 @@
 
 <body>
 
+  <!-- Navigation Bar strictly matching the unified platform layout -->
   <header class="navbar">
-
-    <div class="nav-left">
-      <a href="index.html" class="nav-brand">WaferMind</a>
-      <span class="nav-subtitle">Image Restoration Platform</span>
-    </div>
-
-    <ul class="nav-links">
-      <li><a href="index.html">Overview</a></li>
-      <li><a href="restore.html">Restore</a></li>
-      <li><a href="results.html" class="active">Results</a></li>
-      <li><a href="analysis.html">Analysis</a></li>
-    </ul>
-
-    <div class="nav-right">
-      <div class="model-badge">MODEL: NAFNet</div>
-
-      <div class="system-status">
-        <span class="status-dot"></span>
-        SYSTEM READY
+    <div class="nav-container">
+      <div class="nav-left">
+        <a href="index.html" class="nav-brand">
+          <img src="assets/logo.svg" alt="WaferMind Logo" style="width: 32px; height: 32px; display: block;">
+          <span>WaferMind</span>
+        </a>
+        <span class="nav-subtitle">IMAGE RESTORATION PLATFORM</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="restore.html">Restore</a></li>
+        <li><a href="results.html" class="active">Results</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="model-badge">MODEL: NAFNet</div>
+        <div class="system-status"><span class="status-dot"></span>READY</div>
       </div>
     </div>
-
   </header>
 
   <main class="container">
 
     <div>
       <span class="label-small">INFERENCE COMPLETE</span>
-
       <h2>Restoration Results</h2>
-
       <p class="subtitle">
-        NAFNet restored output generated from the uploaded image.
+        High-precision NAFNet restored output generated from the uploaded image.
       </p>
     </div>
 
@@ -189,7 +422,6 @@
     </div>
 
     <div class="metrics-grid">
-
       <div class="glass-card metric-card">
         <h3 id="metric-psnr">—</h3>
         <p>Peak Signal-to-Noise Ratio</p>
@@ -209,110 +441,72 @@
         <h3 id="metric-resolution">—</h3>
         <p>Output Resolution</p>
       </div>
-
     </div>
 
     <div class="details-grid">
-
       <div class="glass-card">
-
-        <h3>Restoration Summary</h3>
-
-        <p
-          class="file-info"
-          style="margin-top: 0.25rem;"
-        >
-          NAFNet performs restoration and 2× super-resolution on the uploaded input.
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-main);">Restoration Summary</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
+          NAFNet performs deep artifact removal and 2× super-resolution on the uploaded input.
         </p>
 
         <div class="improvements-list">
-
           <div class="improvement-box">
             <h4>Noise Reduction</h4>
-            <span>NAFNet</span>
+            <span>NAFNet Block</span>
           </div>
 
           <div class="improvement-box">
             <h4>Detail Recovery</h4>
-            <span>NAFNet</span>
+            <span>High-Frequency</span>
           </div>
 
           <div class="improvement-box">
             <h4>Super Resolution</h4>
             <span>2× OUTPUT</span>
           </div>
-
         </div>
-
       </div>
 
       <div class="glass-card">
-
-        <h3>Image Details</h3>
-
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-main);">Image Details</h3>
         <table class="image-details-table">
-
           <tr>
             <td>Input</td>
             <td id="detail-input-res">—</td>
           </tr>
-
           <tr>
             <td>Output</td>
             <td id="detail-output-res">—</td>
           </tr>
-
           <tr>
             <td>Model</td>
             <td>NAFNet</td>
           </tr>
-
           <tr>
             <td>Precision</td>
             <td>FP16</td>
           </tr>
-
           <tr>
             <td>Hardware</td>
             <td>GPU Accelerated</td>
           </tr>
-
         </table>
-
       </div>
-
     </div>
 
-    <div
-      style="
-        display:flex;
-        gap:1rem;
-        margin-top:2.5rem;
-        justify-content:flex-end;
-      "
-    >
-
-      <a
-        href="restore.html"
-        class="btn-secondary"
-      >
+    <div style="display: flex; gap: 1rem; margin-top: 2.5rem; justify-content: flex-end;">
+      <a href="restore.html" class="btn-secondary">
         Restore Another Image
       </a>
-
-      <button
-        type="button"
-        class="btn-primary"
-        id="download-btn"
-      >
-        Download Restored Image
+      <button type="button" class="btn-primary" id="download-btn">
+        ✦ Download Restored Image
       </button>
-
     </div>
 
   </main>
 
   <script src="js/main.js"></script>
   <script src="js/results.js"></script>
-
 </body>
 </html>

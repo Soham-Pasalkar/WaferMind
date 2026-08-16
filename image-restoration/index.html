@@ -8,183 +8,624 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-deep: #020617;
+      --bg-surface: #0f172a;
+      --electric-blue: #38bdf8;
+      --electric-cyan: #22d3ee;
+      --navy-card: rgba(15, 23, 42, 0.85);
+      --border-electric: rgba(56, 189, 248, 0.2);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Navbar UI Experience */
+    .navbar {
+      background: rgba(2, 6, 23, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-electric);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+    }
+
+    .nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+    }
+
+    .nav-brand span {
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--text-main);
+      letter-spacing: -0.025em;
+    }
+
+    .nav-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-left: 1px solid rgba(255, 255, 255, 0.15);
+      padding-left: 0.85rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.25s ease;
+    }
+
+    .nav-links a.active,
+    .nav-links a:hover {
+      color: var(--electric-blue);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .model-badge {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--electric-blue);
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
+    .system-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: #34d399;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #34d399;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #34d399;
+    }
+
+    /* Hero Section Architecture */
     .hero {
+      position: relative;
       display: grid;
       grid-template-columns: 1.2fr 0.8fr;
       gap: 4rem;
       align-items: center;
-      padding: 4rem 0;
+      max-width: 1280px;
+      margin: 3rem auto;
+      padding: 4rem 2rem;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(2, 6, 23, 0.95) 100%),
+                  url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2000&auto=format&fit=crop') center/cover;
+      background-blend-mode: overlay;
+      border: 1px solid var(--border-electric);
+      border-radius: 1.5rem;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8),
+                  inset 0 0 40px rgba(56, 189, 248, 0.03);
+    }
+
+    .label-small {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--electric-cyan);
+      letter-spacing: 0.12em;
+      background: rgba(34, 211, 238, 0.1);
+      padding: 0.35rem 0.75rem;
+      border-radius: 4px;
+      border: 1px solid rgba(34, 211, 238, 0.25);
+      display: inline-block;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      background: linear-gradient(to right, #fff, #cbd5e1, var(--electric-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
     }
 
     .hero-cta {
       display: flex;
-      gap: 1rem;
-      margin-top: 2rem;
+      gap: 1.25rem;
     }
 
-    .hero-graphic {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 1rem;
-      padding: 2.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      align-items: center;
-      text-align: center;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-    }
-
-    .graphic-box {
-      width: 100%;
-      padding: 1.25rem;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px dashed var(--card-border);
+    .btn-primary {
+      background: linear-gradient(135deg, var(--electric-blue) 0%, #0284c7 100%);
+      color: #020617;
+      font-weight: 700;
+      padding: 0.9rem 2rem;
       border-radius: 0.5rem;
+      box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.4);
+      transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -5px rgba(56, 189, 248, 0.6);
+    }
+
+    .btn-secondary {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border-electric);
+      color: var(--text-main);
       font-weight: 600;
-      font-size: 0.9rem;
-      color: var(--text-muted);
+      padding: 0.9rem 2rem;
+      border-radius: 0.5rem;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .graphic-box.highlight {
-      background: rgba(59, 130, 246, 0.05);
-      border-color: rgba(59, 130, 246, 0.3);
-      color: var(--accent-blue);
+    .btn-secondary:hover {
+      background: rgba(30, 41, 59, 0.9);
+      border-color: var(--electric-blue);
+      transform: translateY(-2px);
     }
 
-    .arrow-icon {
-      color: var(--text-muted);
-      font-size: 1.2rem;
+    /* 3D Floating Graphic Animation */
+    .hero-graphic-container {
+      perspective: 1000px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
+    .hero-graphic-img {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      filter: drop-shadow(0 25px 40px rgba(56, 189, 248, 0.25));
+      animation: floatWafer 6s ease-in-out infinite;
+      transform-style: preserve-3d;
+    }
+
+    @keyframes floatWafer {
+      0%, 100% { transform: translateY(0) rotateX(6deg) rotateY(-10deg); }
+      50% { transform: translateY(-12px) rotateX(-6deg) rotateY(10deg); }
+    }
+
+    /* Features Grid Alignment */
     .features-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 2rem;
-      margin-top: 4rem;
+      max-width: 1280px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .glass-card {
+      background: var(--navy-card);
+      border: 1px solid var(--border-electric);
+      border-radius: 1rem;
+      padding: 2.25rem;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .glass-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--electric-blue);
+      box-shadow: 0 25px 50px -10px rgba(56, 189, 248, 0.15);
     }
 
     .feature-card h3 {
       font-size: 1.25rem;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.85rem;
+      color: var(--text-main);
+      font-weight: 700;
     }
 
     .feature-card p {
       color: var(--text-muted);
       font-size: 0.95rem;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
+    /* Pipeline Architecture Section */
     .pipeline-section {
-      margin-top: 5rem;
+      max-width: 1280px;
+      margin: 6rem auto;
+      padding: 0 2rem;
       text-align: center;
     }
 
-    .pipeline-flow {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 2.5rem;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 2rem;
-      border-radius: 1rem;
-      position: relative;
+    .pipeline-section h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
     }
 
-    .pipeline-node {
+    .interactive-pipeline-container.wafer-foundry-theme {
+      position: relative;
+      width: 100%;
+      margin: 3.5rem auto;
+      padding: 4.5rem 3rem;
+      background: radial-gradient(circle at 50% 50%, #09122c 0%, #020617 100%);
+      border: 1px solid var(--border-electric);
+      border-radius: 1.5rem;
+      box-shadow: 0 35px 90px rgba(0, 0, 0, 0.9),
+                  inset 0 0 60px rgba(56, 189, 248, 0.02);
+      overflow: hidden;
+    }
+
+    .semiconductor-wafer-bg {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(56,189,248,0.06) 1px, transparent 1px);
+      background-size: 36px 36px;
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .pipeline-svg-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .litho-track {
+      fill: none;
+      stroke: rgba(56, 189, 248, 0.12);
+      stroke-width: 2.5px;
+    }
+
+    .litho-track.skip {
+      stroke: rgba(34, 211, 238, 0.18);
+      stroke-dasharray: 6, 6;
+    }
+
+    .laser-pulse {
+      fill: none;
+      stroke-width: 4px;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 10px var(--electric-blue));
+    }
+
+    .laser-pulse.main-pipeline {
+      stroke-dasharray: 50, 450;
+      animation: lithoFlowMain 3.5s linear infinite;
+    }
+
+    .laser-pulse.cross-die {
+      stroke-dasharray: 20, 180;
+      animation: lithoFlowSkip 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+    }
+
+    @keyframes lithoFlowMain {
+      0% { stroke-dashoffset: 1200; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { stroke-dashoffset: 0; opacity: 0; }
+    }
+
+    @keyframes lithoFlowSkip {
+      0% { stroke-dashoffset: 400; opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { stroke-dashoffset: 0; opacity: 0; }
+    }
+
+    .pipeline-interactive-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr 1fr;
+      grid-template-rows: repeat(4, auto);
+      gap: 3.5rem 3rem;
+      z-index: 3;
+    }
+
+    .pipeline-card.foundry-node {
+      position: relative;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(3, 7, 18, 0.95) 100%);
+      border: 1px solid var(--border-electric);
+      border-radius: 8px;
+      padding: 1.75rem 1.5rem;
+      text-align: left;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+      transition: all 0.4s cubic-bezier(0.25, 1, 0.2, 1);
+    }
+
+    .pipeline-card.foundry-node:hover {
+      border-color: var(--electric-blue);
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(56, 189, 248, 0.2);
+    }
+
+    .foundry-node h4 {
+      margin: 0 0 0.4rem 0;
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: var(--text-main);
+    }
+
+    .foundry-node p {
+      margin: 0;
       font-size: 0.8rem;
-      font-weight: 600;
       color: var(--text-muted);
-      padding: 0.75rem 1rem;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--card-border);
-      border-radius: 0.4rem;
-      position: relative;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    .pipeline-node.active {
-      color: var(--accent-blue);
-      border-color: var(--accent-blue);
-      box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+    .die-coordinates {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--electric-blue);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.1em;
+      opacity: 0.8;
+    }
+
+    .wafer-crosshair {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 14px;
+      height: 14px;
+      opacity: 0.5;
+    }
+    .wafer-crosshair::before, .wafer-crosshair::after {
+      content: '';
+      position: absolute;
+      background: var(--electric-blue);
+    }
+    .wafer-crosshair::before { top: 6px; left: 0; width: 14px; height: 1px; }
+    .wafer-crosshair::after { top: 0; left: 6px; width: 1px; height: 14px; }
+
+    /* Responsive Viewports */
+    @media (max-width: 1024px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 3rem 2rem;
+      }
+      .hero-cta {
+        justify-content: center;
+      }
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      .pipeline-interactive-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-links {
+        display: none;
+      }
     }
   </style>
 </head>
 
 <body>
 
+  <!-- Navigation Bar -->
   <header class="navbar">
-    <div class="nav-left">
-      <a href="index.html" class="nav-brand"
-        style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
-        <img src="assets/logo.svg" alt="WaferMind Logo" style="width: 32px; height: 32px;">
-        <span>WaferMind</span>
-        <span class="nav-subtitle">Image Restoration Platform</span>
-      </a>
-    </div>
-    <ul class="nav-links">
-      <li><a href="index.html" class="active">Overview</a></li>
-      <li><a href="restore.html">Restore</a></li>
-      <li><a href="results.html">Results</a></li>
-      <li><a href="analysis.html">Analysis</a></li>
-    </ul>
-    <div class="nav-right">
-      <div class="model-badge">MODEL: NAFNet</div>
-      <div class="system-status"><span class="status-dot"></span>SYSTEM READY</div>
+    <div class="nav-container">
+      <div class="nav-left">
+        <a href="index.html" class="nav-brand">
+          <img src="assets/logo.svg" alt="WaferMind Logo" style="width: 32px; height: 32px;">
+          <span>WaferMind</span>
+          <span class="nav-subtitle">Image Restoration Platform</span>
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Overview</a></li>
+        <li><a href="restore.html">Restore</a></li>
+        <li><a href="results.html">Results</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="model-badge">MODEL: NAFNet</div>
+        <div class="system-status"><span class="status-dot"></span>READY</div>
+      </div>
     </div>
   </header>
 
-  <main class="container">
+  <main>
+    <!-- Hero Section -->
     <section class="hero">
       <div>
         <span class="label-small">SEMICON AI HACKATHON 2026</span>
-        <h1>Restore What Was Lost.</h1>
-        <p class="subtitle">Recover visual information from degraded images using deep learning-based image restoration
-          designed for computer vision workloads.</p>
+        <h1>Precision Restored, Pixel by Pixel.</h1>
+        <p class="subtitle">Recover visual information from degraded images using advanced deep learning-based image restoration designed for high-precision computer vision and foundry wafer analytics.</p>
         <div class="hero-cta">
-          <a href="restore.html" class="btn-primary">Start Restoration →</a>
-          <a href="analysis.html" class="btn-secondary">Explore Analysis</a>
+          <a href="restore.html" class="btn-primary">Start Restoration</a>
         </div>
       </div>
-      <div class="hero-graphic">
-        <div class="graphic-box">DEGRADED IMAGE</div>
-        <div class="arrow-icon">↓</div>
-        <div class="graphic-box highlight">AI RESTORATION (NAFNet)</div>
-        <div class="arrow-icon">↓</div>
-        <div class="graphic-box">RESTORED IMAGE</div>
+
+      <!-- 3D Floating Wafer Hero Graphic -->
+      <div class="hero-graphic-container">
+        <img src="assets/logo.svg" alt="WaferMind Hero Brand Graphic" class="hero-graphic-img" />
       </div>
     </section>
 
+    <!-- Features Segment Grid -->
     <section class="features-grid">
       <div class="glass-card feature-card">
         <h3>Noise Removal</h3>
-        <p>Advanced deep architecture designed to cleanly eliminate Gaussian and speckle noise without destroying
-          structural edges.</p>
+        <p>Deep-learning restoration designed to suppress sensor, Gaussian, and speckle noise while preserving fine semiconductor patterns, wafer structures, and critical edge information.</p>
       </div>
       <div class="glass-card feature-card">
         <h3>Resolution Recovery</h3>
-        <p>Recover useful high-frequency visual details and clean up artifacts caused by aggressive down-sampling
-          pipelines.</p>
+        <p>Reconstruct high-frequency details lost during low-resolution imaging, restoring sharper wafer patterns, structural boundaries, and inspection-critical visual features.</p>
       </div>
       <div class="glass-card feature-card">
         <h3>Fast Inference</h3>
-        <p>Optimized FP16 restoration pipeline built for rapid edge execution and real-time operational workflows.</p>
+        <p>Optimized restoration pipeline for rapid image processing, enabling efficient inference and near real-time analysis across semiconductor inspection workflows.</p>
       </div>
     </section>
 
+    <!-- End-to-End Processing Pipeline Section -->
     <section class="pipeline-section">
       <span class="label-small">ARCHITECTURE PIPELINE</span>
       <h2>End-to-End Processing Workflow</h2>
-      <div class="pipeline-flow">
-        <div class="pipeline-node">INPUT</div>
-        <div class="pipeline-node">DEGRADATION ANALYSIS</div>
-        <div class="pipeline-node">PREPROCESSING</div>
-        <div class="pipeline-node active">RESTORATION MODEL</div>
-        <div class="pipeline-node">POSTPROCESSING</div>
-        <div class="pipeline-node">OUTPUT</div>
+      <p style="color: var(--text-muted); font-size: 1rem; max-width: 650px; margin: 0.5rem auto 2.5rem auto;">Interactive visualization of the multi-scale NAFNet neural network architecture and residual skip connections.</p>
+
+      <!-- Semiconductor Foundry Theme Pipeline Container -->
+      <div class="interactive-pipeline-container wafer-foundry-theme">
+        
+        <!-- Background Silicon Substrate Texture -->
+        <div class="semiconductor-wafer-bg"></div>
+        
+        <!-- SVG Optical Trace Canvas -->
+        <svg class="pipeline-svg-canvas" viewBox="0 0 800 600" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="litho-laser" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#38bdf8" />
+              <stop offset="50%" stop-color="#22d3ee" />
+              <stop offset="100%" stop-color="#818cf8" />
+            </linearGradient>
+            <linearGradient id="skip-laser" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.9" />
+              <stop offset="100%" stop-color="#818cf8" stop-opacity="0.9" />
+            </linearGradient>
+            <filter id="litho-glow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="6" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          
+          <!-- Static Substrate Tracks -->
+          <path class="litho-track" d="M 200,80 L 200,200 L 200,320 Q 200,480 400,480 Q 600,480 600,320 L 600,200 L 600,80" />
+          <path class="litho-track skip" d="M 200,200 L 600,200" />
+          <path class="litho-track skip" d="M 200,320 L 600,320" />
+
+          <!-- Dynamic Laser Pulse Animations -->
+          <path class="laser-pulse main-pipeline" stroke="url(#litho-laser)" filter="url(#litho-glow)" d="M 200,80 L 200,200 L 200,320 Q 200,480 400,480 Q 600,480 600,320 L 600,200 L 600,80" />
+          <path class="laser-pulse cross-die" stroke="url(#skip-laser)" filter="url(#litho-glow)" d="M 200,200 L 600,200" />
+          <path class="laser-pulse cross-die" style="animation-delay: 1.25s;" stroke="url(#skip-laser)" filter="url(#litho-glow)" d="M 200,320 L 600,320" />
+        </svg>
+
+        <!-- Pipeline Grid Layout Matching Reference Flowchart -->
+        <div class="pipeline-interactive-grid">
+          
+          <!-- STEP 01: DEGRADED IMAGE -->
+          <div class="pipeline-card foundry-node" style="grid-row: 1; grid-column: 1;">
+            <div class="wafer-crosshair"></div>
+            <span class="die-coordinates">[X:01, Y:A7]</span>
+            <h4>DEGRADED IMAGE</h4>
+            <p>Grayscale Input</p>
+          </div>
+          
+          <!-- STEP 02: FEATURE EXTRACTION -->
+          <div class="pipeline-card foundry-node" style="grid-row: 2; grid-column: 1;">
+            <div class="wafer-crosshair"></div>
+            <span class="die-coordinates">[X:01, Y:B4]</span>
+            <h4>FEATURE EXTRACTION</h4>
+            <p>Rich Features</p>
+          </div>
+          
+          <!-- STEP 03: MULTI-SCALE NAFNET -->
+          <div class="pipeline-card foundry-node" style="grid-row: 3; grid-column: 1;">
+            <div class="wafer-crosshair"></div>
+            <span class="die-coordinates">[X:01, Y:C2]</span>
+            <h4>MULTI-SCALE NAFNET</h4>
+            <p>NAF Blocks</p>
+          </div>
+
+          <!-- STEP 04: STRUCTURAL RESTORATION -->
+          <div class="pipeline-card foundry-node" style="grid-row: 4; grid-column: 2;">
+            <div class="wafer-crosshair"></div>
+            <span class="die-coordinates">[X:02, Y:D0]</span>
+            <h4>STRUCTURAL RESTORATION</h4>
+            <p>Decoder + Skip</p>
+          </div>
+
+          <!-- STEP 05: RESIDUAL RECONSTRUCTION -->
+          <div class="pipeline-card foundry-node" style="grid-row: 3; grid-column: 3;">
+            <div class="wafer-crosshair"></div>
+            <span class="die-coordinates">[X:03, Y:C2]</span>
+            <h4>RESIDUAL RECONSTRUCTION</h4>
+            <p>Bicubic + Learned Detail</p>
+          </div>
+          
+          <!-- STEP 06: SUPER-RESOLUTION -->
+          <div class="pipeline-card foundry-node" style="grid-row: 2; grid-column: 3;">
+            <div class="wafer-crosshair"></div>
+            <span class="die-coordinates">[X:03, Y:B4]</span>
+            <h4>2× PIXELSHUFFLE</h4>
+            <p>Super-Resolution</p>
+          </div>
+          
+          <!-- STEP 07: RESTORED IMAGE -->
+          <div class="pipeline-card foundry-node" style="grid-row: 1; grid-column: 3;">
+            <div class="wafer-crosshair"></div>
+            <span class="die-coordinates">[X:03, Y:A7]</span>
+            <h4>RESTORED IMAGE</h4>
+            <p>High-Quality</p>
+          </div>
+
+        </div>
       </div>
     </section>
   </main>
